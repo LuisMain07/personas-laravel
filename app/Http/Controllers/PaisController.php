@@ -68,6 +68,9 @@ class PaisController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pais = Pais::find($id);
+        $pais->delete();
+
+        return redirect()->route('paises.index');
     }
 }
