@@ -50,23 +50,29 @@ class PaisController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $pais = Pais::find($id);
+        return view('pais.edit', ['pais' => $pais]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $pais = Pais::find($id);
+        $pais->pais_nomb = $request->name;
+        $pais->pais_capi = $request->capital;
+        $pais->save();
+
+        return redirect()->route('paises.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $pais = Pais::find($id);
         $pais->delete();
