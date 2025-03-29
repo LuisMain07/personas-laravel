@@ -22,7 +22,7 @@ class PaisController extends Controller
      */
     public function create()
     {
-        //
+        return view('pais.new');
     }
 
     /**
@@ -30,7 +30,13 @@ class PaisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pais = new Pais();
+        $pais->pais_codi = $request->code;
+        $pais->pais_nomb = $request->name;
+        $pais->pais_capi = $request->capital;
+        $pais->save();
+
+        return redirect()->route('paises.index');
     }
 
     /**
