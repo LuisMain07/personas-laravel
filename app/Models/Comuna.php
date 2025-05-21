@@ -11,4 +11,5 @@ class Comuna extends Model
     protected $table = 'tb_comuna';
     protected $primaryKey = 'comu_codi';
     public $timestamps = false;
+
 }
