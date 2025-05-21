@@ -68,7 +68,6 @@ class ComunaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Valida los datos; si hay errores, Laravel lanza una excepción automáticamente
         $request->validate([
             'comu_nomb' => ['required', 'max:255'],
             'muni_codi' => ['required', 'numeric', 'min:1'],

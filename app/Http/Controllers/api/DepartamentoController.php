@@ -27,24 +27,25 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'depa_nomb' => ['required',' max:255'],
-            'pais_codi' => ['required','min:1'],
-        ]);
-
-        if ($validated->fails()) {
-            return response()->json([
-                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+        try {
+            $request->validate([
+                'depa_nomb' => ['required', 'max:255'],
+                'pais_codi' => ['required', 'min:1'],
             ]);
+
+            $departamento = new Departamento();
+            $departamento->depa_nomb = $request->depa_nomb;
+            $departamento->pais_codi = $request->pais_codi;
+            $departamento->save();
+
+            return response()->json(['departamento' => $departamento], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al crear el departamento.',
+                'detalle' => $e->getMessage(),
+            ], 500);
         }
-
-        $departamento = new Departamento();
-
-        $departamento->depa_nomb = $request->depa_nomb;
-        $departamento->pais_codi = $request->pais_codi;
-        $departamento->save();
-
-        return json_encode(['departamento' => $departamento]);
     }
 
     /**
@@ -68,26 +69,21 @@ class DepartamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validated = $request->validate([
-            'depa_nomb' => ['required',' max:255'],
-            'pais_codi' => ['required','min:1'],
+        $request->validate([
+            'depa_nomb' => ['required', 'max:255'],
+            'pais_codi' => ['required', 'min:1'],
         ]);
-
-        if ($validated->fails()) {
-            return response()->json([
-                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
-            ]);
-        }
 
         $departamento = Departamento::find($id);
         if (is_null($departamento)) {
-                return abort(404);
-            }
+            return response()->json(['message' => 'Departamento no encontrado.'], 404);
+        }
+
         $departamento->depa_nomb = $request->depa_nomb;
         $departamento->pais_codi = $request->pais_codi;
         $departamento->save();
 
-        return json_encode(['departamento' => $departamento]);
+        return response()->json(['departamento' => $departamento]);
     }
 
     /**
