@@ -20,3 +20,7 @@ Route::get('/comunas/{comuna}', [ComunaController::class, 'show'])->name('comuna
 Route::put('/comunas/{comuna}', [ComunaController::class, 'update'])->name('comunas.update');
 
 Route::get('/municipios', [MunicipioController::class, 'index'])->name('municipios');
+Route::post('/municipios', [MunicipioController::class, 'store'])->name('municipios.store');
+Route::get('/municipios/{municipio}', [MunicipioController::class, 'show'])->name('municipios.show');
+Route::put('/municipios/{municipio}', [MunicipioController::class, 'update'])->name('municipios.update');
+Route::delete('/municipios/{municipio}', [MunicipioController::class, 'destroy'])->name('municipios.destroy');
