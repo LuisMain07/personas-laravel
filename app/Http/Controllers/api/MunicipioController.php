@@ -26,24 +26,25 @@ class MunicipioController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'muni_nomb' => ['required',' max:255'],
-            'depa_codi' => ['required','numeric','min:1'],
+        try {
+        $request->validate([
+            'muni_nomb' => ['required', 'max:255'],
+            'depa_codi' => ['required', 'numeric', 'min:1'],
         ]);
 
-        if ($validated->fails()) {
-            return response()->json([
-                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
-            ]);
-        }
-
         $municipio = new Municipio();
-
         $municipio->muni_nomb = $request->muni_nomb;
         $municipio->depa_codi = $request->depa_codi;
         $municipio->save();
 
-        return json_encode(['municipio' => $municipio]);
+        return response()->json(['municipio' => $municipio], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error al crear el municipio.',
+            'detalle' => $e->getMessage(),
+        ], 500);
+    }
     }
 
     /**
@@ -69,11 +70,12 @@ class MunicipioController extends Controller
     {
         
         $request->validate([
-            'muni_nomb' => ['required', 'max:255'],
-            'depa_codi' => ['required', 'numeric', 'min:1'],
+        'muni_nomb' => ['required', 'max:255'],
+        'depa_codi' => ['required', 'numeric', 'min:1'],
         ]);
 
-        $municipio = Municipio::find($id);    
+        $municipio = Municipio::find($id);
+
         if (is_null($municipio)) {
             return response()->json(['message' => 'Municipio no encontrado.'], 404);
         }
